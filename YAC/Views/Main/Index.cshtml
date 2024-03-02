@@ -1,0 +1,12 @@
+﻿@model IEnumerable<ToDoListModel>
+
+@{
+    ViewData["Title"] = "Checklists";
+}
+
+<div id="todolist">
+    @foreach (var tdl in Model)
+    {
+        <partial name="EditableToDoList" for="@tdl" />
+    }
+</div>

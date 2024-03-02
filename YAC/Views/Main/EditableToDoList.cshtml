@@ -1,0 +1,13 @@
+﻿@model ToDoListModel
+
+<div id="todolist-@Model.Id">
+    <div class="title">
+        @Model.Title
+    </div>
+    <div id="todoitemlist">
+        @foreach (var item in Model.Items)
+        {
+            <partial name="EditableToDoItem" for="@item" />
+        }
+    </div>
+</div>

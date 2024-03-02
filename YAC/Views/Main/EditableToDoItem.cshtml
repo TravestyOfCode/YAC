@@ -1,0 +1,7 @@
+﻿@model ToDoItemModel
+
+<div id="todoitem-@Model.Id">
+    <input type="checkbox" checked="@Model.IsCompleted" name="IsCompleted" />
+    <div>@Model.Description</div>
+    <div>@Model.DueBy?.ToString("MM/dd/yyyy")</div>
+</div>
