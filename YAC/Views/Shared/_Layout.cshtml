@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Yet Another Checklist</title>
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+</head>
+
+<body class="">
+    <div class="flex flex-col h-screen justify-between">
+        <header class="border-b border-slate-700 bg-gray-200 text-gray-800 dark:bg-slate-700 dark:text-gray-300">
+            <div class="">
+                <div class="h-16 mx-auto px-5 flex items-center justify-between">
+                    <a class="text-2xl hover:text-slate-400 transition-colors cursor-pointer">Yet Another Checklist</a>
+                    <ul class="flex items-center gap-5">
+                        <li><a class="hover:text-slate-400 transition-colors cursor-pointer" href="#">Sign Up</a></li>
+                        <li><a class="hover:text-slate-400 transition-colors cursor-pointer" href="#">Login</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow pb-12 bg-gray-300 text-gray-800 dark:bg-slate-800 dark:text-gray-300">
+            @RenderBody()
+        </main>
+
+        <footer class="w-full py-4 bg-gray-300 text-grey-800 dark:bg-slate-700 dark:text-gray-300 fixed bottom-0">
+            <div class="text-center">
+                <p>
+                    Copyright &copy; 2024 <a class="font-semibold" href="mailto:travis@travestyofcode.com">
+                        Travis
+                        Trudeau
+                    </a>
+                </p>
+            </div>
+        </footer>
+    </div>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>
