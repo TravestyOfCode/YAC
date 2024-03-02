@@ -23,7 +23,14 @@ public static class ToDoListModelExtensions
             Id = p.Id,
             OwnerId = p.OwnerId,
             Title = p.Title,
-            Items = p.Items.AsQueryable().ProjectToModel()
+            Items = p.Items.Select(i => new ToDoItemModel()
+            {
+                Id = i.Id,
+                Description = i.Description,
+                DueBy = i.DueBy,
+                IsCompleted = i.IsCompleted,
+                ToDoListId = i.ToDoListId
+            })
         });
     }
 }
