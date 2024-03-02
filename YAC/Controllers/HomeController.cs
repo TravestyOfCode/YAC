@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using YAC.Models;
+using YAC.Utilities;
 
 namespace YAC.Controllers;
+
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -14,6 +16,12 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        // If the user is logged in, redirect to Main
+        if (User.Identity.IsAuthenticated)
+        {
+            return RedirectToAction(controllerName: ViewNames.Main, actionName: ViewNames.Index);
+        }
+
         return View();
     }
 
