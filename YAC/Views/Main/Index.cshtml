@@ -1,12 +1,19 @@
-﻿@model IEnumerable<ToDoListModel>
+﻿@model IList<ToDoListModel>
 
 @{
     ViewData["Title"] = "Checklists";
 }
 
+@if(Model== null || Model.Count < 1)
+{
+    <div>You have no Checklists.</div>
+}
+else
+{
 <div id="todolist">
     @foreach (var tdl in Model)
     {
         <partial name="EditableToDoList" for="@tdl" />
     }
 </div>
+}
