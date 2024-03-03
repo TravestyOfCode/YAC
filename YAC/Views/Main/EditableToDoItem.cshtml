@@ -1,13 +1,7 @@
 ﻿@model ToDoItemModel
 
-<tr class="px-4">
-    <td class="px-4"><input type="checkbox" checked="@Model.IsCompleted" name="IsCompleted" /></td>
-    <td class="px-4">@Model.Description</td>
-    <td class="px-4">@Model.DueBy?.ToString("MM/dd/yyyy")</td>
-</tr>
-
-@*<div id="todoitem-@Model.Id" class="grid grid-flow-col auto-cols-auto">
-    <div><input type="checkbox" checked="@Model.IsCompleted" name="IsCompleted" /></div>
-    <div>@Model.Description</div>
-    <div>@Model.DueBy?.ToString("MM/dd/yyyy")</div>
-</div>*@
+<li class="flex items-center mb-2">
+    <input type="checkbox" class="w-4 h-4 mx-2" checked="@Model.IsCompleted" name="IsCompleted"/>
+    <span class="mx-2">@Model.Description</span>
+    <span class="mx-2">@Model.DueBy?.ToString("MM/dd/yyyy hh:mm tt")</span>
+</li>

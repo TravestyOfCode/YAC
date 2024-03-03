@@ -1,34 +1,11 @@
 ﻿@model ToDoListModel
 
-<div id="todolist-@Model.Id" class="border rounded">
-    <div class="title border-b text-lg px-2 bg-slate-800 dark:bg-slate-700">
-        @Model.Title
-    </div>
-    <table class="table-auto mx-2 mb-4">
-        <thead class="">
-            <tr class="font-bold underline">
-                <td class="px-4">✓</td>
-                <td class="px-4">Description</td>
-                <td class="px-4">Due By?</td>
-            </tr>
-        </thead>
-        <tbody id="todoitemlist">
-            @foreach (var item in Model.Items)
-            {
-                <partial name="EditableToDoItem" for="@item" />
-            }
-        </tbody>
-    </table>
-
-    @*<div class="grid grid-flow-col auto-cols-auto">
-        <div class="text-bold">✓</div>
-        <div class="text-bold">Description</div>
-        <div class="text-bold">Due By?</div>
-    </div>
-    <div id="todoitemlist">
-        @foreach (var item in Model.Items)
+<div id="todolist-@Model.Id" class="border rounded shadow p-2">
+    <h3 class="text-xl font-bold mb-4 border-b">@Model.Title</h3>
+    <ul>
+        @foreach(var item in Model.Items)
         {
             <partial name="EditableToDoItem" for="@item" />
         }
-    </div>*@
+    </ul>   
 </div>
