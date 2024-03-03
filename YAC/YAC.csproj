@@ -23,7 +23,11 @@
 		<UpToDateCheckBuilt Include="tailwind.config.js" Set="Css" />
 	</ItemGroup>
 
-	<Target Name="Tailwind" BeforeTargets="Build"  >
+	<ItemGroup>
+	  <Folder Include="wwwroot\lib\" />
+	</ItemGroup>
+
+	<Target Name="Tailwind" BeforeTargets="Build">
 		<Message Importance="high" Text="Building Tailwind CSS" />
 		<Exec Command="tailwindcss -i ./wwwroot/css/site.css -o ./wwwroot/css/styles.css" />		
 	</Target>
