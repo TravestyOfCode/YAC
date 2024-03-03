@@ -10,7 +10,7 @@
 }
 else
 {
-<div id="todolist">
+    <div id="todolist" class="flex gap-x-2 my-4 ml-8">
     @foreach (var tdl in Model)
     {
         <partial name="EditableToDoList" for="@tdl" />
