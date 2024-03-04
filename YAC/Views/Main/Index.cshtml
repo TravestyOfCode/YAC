@@ -4,12 +4,18 @@
     ViewData["Title"] = "Checklists";
 }
 
+<div class="flex justify-between m-4">
+    <div class="text-2xl font-bold">Checklists</div>
+    <button class="bg-green-600 border border-green-800 rounded text-white hover:bg-green-500 px-2"
+            hx-post="/Main/Create" hx-prompt="Checklist Name" hx-target="#main" hx-swap="innerHTML">Add Checklist</button>
+</div>
+
 @if(Model== null || Model.Count < 1)
 {
     <div>You have no Checklists.</div>
 }
 else
-{
+{    
     <div id="todolist" class="flex gap-x-2 my-4 ml-8">
     @foreach (var tdl in Model)
     {

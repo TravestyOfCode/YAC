@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
@@ -231,5 +232,31 @@ public class MainController : Controller
 
             return StatusCode(500);
         }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(CancellationToken cancellationToken)
+    {
+        var title = Request.Headers["hx-prompt"];
+
+        if (title.IsNullOrEmpty())
+        {
+            return BadRequest();
+        }
+
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var entity = _dbContext.ToDoList.Add(new ToDoList() { Title = title, OwnerId = userId });
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        // Get all of the ToDoList, with Items, for the user.
+        var lists = await _dbContext.ToDoList
+            .Where(p => p.OwnerId.Equals(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+            .Include(p => p.Items)
+            .ProjectToModel()
+            .ToListAsync(cancellationToken);
+
+        return PartialView(nameof(Index), lists);
     }
 }
