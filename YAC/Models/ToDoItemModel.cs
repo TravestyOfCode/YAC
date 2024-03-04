@@ -28,4 +28,21 @@ public static class ToDoItemModelExtensions
             DueBy = p.DueBy
         });
     }
+
+    public static ToDoItemModel AsModel(this Data.ToDoItem entity)
+    {
+        if (entity == null)
+        {
+            return null;
+        }
+
+        return new ToDoItemModel()
+        {
+            Id = entity.Id,
+            Description = entity.Description,
+            DueBy = entity.DueBy,
+            IsCompleted = entity.IsCompleted,
+            ToDoListId = entity.ToDoListId
+        };
+    }
 }

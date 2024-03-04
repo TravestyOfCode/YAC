@@ -88,4 +88,119 @@ public class MainController : Controller
 
         return PartialView(ViewNames.EditableTitle, entity.AsModel());
     }
+
+    [HttpPost]
+    public async Task<IActionResult> UpdateCompleted(int id, string isCompleted = "off", CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var entity = await _dbContext.ToDoItems
+                .SingleOrDefaultAsync(p => p.Id.Equals(id) && p.ToDoList.OwnerId.Equals(userId), cancellationToken);
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            entity.IsCompleted = isCompleted.Equals("on", StringComparison.OrdinalIgnoreCase);
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error.");
+
+            return StatusCode(500);
+        }
+    }
+
+    // Gets an editable form for the specified item row.
+    [HttpGet]
+    public async Task<IActionResult> EditingItem(int id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var entity = await _dbContext.ToDoItems
+                .Where(p => p.Id.Equals(id) && p.ToDoList.OwnerId.Equals(userId))
+                .ProjectToModel()
+                .SingleOrDefaultAsync(cancellationToken);
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView(entity);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error.");
+
+            return StatusCode(500);
+        }
+    }
+
+    // Cancels an editable form for the specified item row, returning an Editable row.
+    [HttpGet]
+    public async Task<IActionResult> EditableItem(int id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var entity = await _dbContext.ToDoItems
+                .Where(p => p.Id.Equals(id) && p.ToDoList.OwnerId.Equals(userId))
+                .ProjectToModel()
+                .SingleOrDefaultAsync(cancellationToken);
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView(entity);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error.");
+
+            return StatusCode(500);
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditableItem(int id, string description, DateTime? dueBy, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var entity = await _dbContext.ToDoItems
+                .SingleOrDefaultAsync(p => p.Id.Equals(id) && p.ToDoList.OwnerId.Equals(userId), cancellationToken);
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            entity.Description = description;
+            entity.DueBy = dueBy;
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return PartialView(entity.AsModel());
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error.");
+
+            return StatusCode(500);
+        }
+    }
 }

@@ -1,0 +1,11 @@
+﻿@model ToDoItemModel
+
+<li class="flex items-center mb-2" id="list-@Model.ToDoListId-item-@Model.Id">
+
+    <input type="checkbox" class="w-4 h-4 mx-2" checked="@Model.IsCompleted" name="IsCompleted"
+           hx-post="/Main/UpdateCompleted/@Model.Id" hx-swap="none" />
+    <div hx-get="/Main/EditingItem/@Model.Id" hx-trigger="dblclick" hx-swap="outerHtml" hx-target="#list-@Model.ToDoListId-item-@Model.Id">
+    <span class="mx-2">@Model.Description</span>
+    <span class="mx-2">@Model.DueBy?.ToString("MM/dd/yyyy hh:mm tt")</span>
+    </div>
+</li>
