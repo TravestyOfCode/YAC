@@ -1,0 +1,4 @@
+﻿@model ToDoListModel
+
+<input type="text" name="Title" class="pl-1 text-neutral-950 mb-4 text-bold"
+    hx-post="/Main/EditingTitle/@Model.Id" hx-trigger="blur" hx-swap="outerHTML" value="@Model.Title" autofocus/>

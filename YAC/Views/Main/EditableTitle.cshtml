@@ -1,0 +1,6 @@
+﻿@model ToDoListModel
+
+<h3 class="text-xl font-bold mb-4 border-b"
+    hx-get="/Main/EditingTitle/@Model.Id" hx-trigger="dblclick" hx-swap="outerHTML">
+    @Model.Title
+</h3>

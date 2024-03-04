@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAC.Data;
 using YAC.Models;
+using YAC.Utilities;
 
 namespace YAC.Controllers;
 
@@ -43,5 +44,48 @@ public class MainController : Controller
 
             return StatusCode(500);
         }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> EditingTitle(int id, CancellationToken cancellationToken)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var entity = await _dbContext.ToDoList
+            .Where(p => p.Id.Equals(id) && p.OwnerId.Equals(userId))
+            .ProjectToModel()
+            .SingleOrDefaultAsync(cancellationToken);
+
+        if (entity == null)
+        {
+            return NotFound();
+        }
+
+        return PartialView(ViewNames.EditingTitle, entity);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditingTitle(int id, string title, CancellationToken cancellationToken)
+    {
+        if (title == null || title.Length > 64)
+        {
+            return BadRequest();
+        }
+
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var entity = await _dbContext.ToDoList
+            .SingleOrDefaultAsync(p => p.Id.Equals(id) && p.OwnerId.Equals(userId), cancellationToken);
+
+        if (entity == null)
+        {
+            return NotFound();
+        }
+
+        entity.Title = title;
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return PartialView(ViewNames.EditableTitle, entity.AsModel());
     }
 }
