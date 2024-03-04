@@ -203,4 +203,33 @@ public class MainController : Controller
             return StatusCode(500);
         }
     }
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteItem(int id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var entity = await _dbContext.ToDoItems
+                .SingleOrDefaultAsync(p => p.Id.Equals(id) && p.ToDoList.OwnerId.Equals(userId), cancellationToken);
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            _dbContext.ToDoItems.Remove(entity);
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error.");
+
+            return StatusCode(500);
+        }
+    }
 }
