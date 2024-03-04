@@ -33,4 +33,27 @@ public static class ToDoListModelExtensions
             })
         });
     }
+
+    public static ToDoListModel AsModel(this Data.ToDoList entity)
+    {
+        if (entity == null)
+        {
+            return null;
+        }
+
+        return new ToDoListModel()
+        {
+            Id = entity.Id,
+            Title = entity.Title,
+            OwnerId = entity.OwnerId,
+            Items = entity.Items?.Select(i => new ToDoItemModel()
+            {
+                Id = i.Id,
+                Description = i.Description,
+                DueBy = i.DueBy,
+                IsCompleted = i.IsCompleted,
+                ToDoListId = i.ToDoListId
+            })
+        };
+    }
 }
