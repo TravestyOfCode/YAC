@@ -259,4 +259,41 @@ public class MainController : Controller
 
         return PartialView(nameof(Index), lists);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteList(int id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var entity = await _dbContext.ToDoList
+                .SingleOrDefaultAsync(p => p.Id.Equals(id) && p.OwnerId.Equals(userId), cancellationToken);
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            _dbContext.ToDoList.Remove(entity);
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            // Get all of the ToDoList, with Items, for the user.
+            var lists = await _dbContext.ToDoList
+                .Where(p => p.OwnerId.Equals(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                .Include(p => p.Items)
+                .ProjectToModel()
+                .ToListAsync(cancellationToken);
+
+            return PartialView(nameof(Index), lists);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error.");
+
+            return StatusCode(500);
+        }
+
+    }
 }
