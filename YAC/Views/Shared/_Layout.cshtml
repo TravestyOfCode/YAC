@@ -37,6 +37,42 @@
     <script src="~/js/htmx.org/dist/htmx.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        htmx.logAll();
+        function DragStart(evt) {
+            evt.dataTransfer.clearData();
+            evt.dataTransfer.setData("text", evt.target.id.replace('todolist-', ''));
+            document.getElementById("sidebar").classList.remove("hidden");
+        }
+
+        function DragEnd(evt) {
+            // Clear any class formats that change when dragged
+            // for example: evt.target.classList.remove("dragging");
+            evt.preventDefault();
+            // Hide the sidebar with the trash can
+            document.getElementById("sidebar").classList.add("hidden");
+
+        }
+
+        function DragOver(evt) {
+            // TODO: Check if this is a valid drop zone.
+            evt.preventDefault();
+        }
+
+        function Drop(evt){
+            evt.preventDefault();
+
+            const sourceId = evt.dataTransfer.getData("text");
+
+            var trashInput = document.getElementById("trashId");
+            trashInput.value = sourceId;
+
+            htmx.trigger("#trash", "deleteList", { id: sourceId });
+        }
+    </script>
 </body>
 
 </html>
+
+
+    
