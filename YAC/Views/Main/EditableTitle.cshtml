@@ -1,6 +1,9 @@
 ﻿@model ToDoListModel
 
-<h3 class="text-xl font-bold mb-4 border-b"
-    hx-get="/Main/EditingTitle/@Model.Id" hx-trigger="dblclick" hx-swap="outerHTML">
-    @Model.Title
-</h3>
+<div class="mb-4 border-b flex justify-between" hx-get="/Main/EditingTitle/@Model.Id" hx-trigger="dblclick" hx-swap="outerHTML">
+    <div class="text-xl font-bold mr-8">@Model.Title</div>
+    <button class="bg-green-600 border border-green-800 rounded text-white hover:bg-green-500 px-2"
+            hx-post="/Main/AddItem/@Model.Id" hx-prompt="Item Description" hx-target="#todolist-@Model.Id" hx-swap="outerHTML">
+        Add Item
+    </button>
+</div>

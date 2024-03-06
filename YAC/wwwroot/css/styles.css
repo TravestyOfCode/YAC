@@ -607,6 +607,10 @@ video {
   margin-left: 2rem;
 }
 
+.mr-8 {
+  margin-right: 2rem;
+}
+
 .inline-block {
   display: inline-block;
 }

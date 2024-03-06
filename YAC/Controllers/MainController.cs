@@ -296,4 +296,46 @@ public class MainController : Controller
         }
 
     }
+
+    [HttpPost]
+    public async Task<IActionResult> AddItem(int id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var description = Request.Headers["hx-prompt"];
+
+            if (description.IsNullOrEmpty())
+            {
+                return BadRequest();
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!await _dbContext.ToDoList.AnyAsync(p => p.Id.Equals(id) && p.OwnerId.Equals(userId), cancellationToken))
+            {
+                return NotFound();
+            }
+
+            var entity = _dbContext.ToDoItems.Add(new ToDoItem()
+            {
+                Description = description,
+                ToDoListId = id
+            });
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            var result = await _dbContext.ToDoList
+                .Where(p => p.Id.Equals(id) && p.OwnerId.Equals(userId))
+                .ProjectToModel()
+                .SingleOrDefaultAsync(cancellationToken);
+
+            return PartialView("EditableToDoList", result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error.");
+
+            return StatusCode(500);
+        }
+    }
 }
