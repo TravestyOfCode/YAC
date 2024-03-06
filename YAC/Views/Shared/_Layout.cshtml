@@ -19,7 +19,7 @@
             </div>
         </header>
 
-        <main class="flex-grow pb-12 bg-gray-300 text-gray-800 dark:bg-slate-800 dark:text-gray-300">
+        <main class="flex-grow pb-12 bg-gray-300 text-gray-800 dark:bg-slate-800 dark:text-gray-300" id="main">
             @RenderBody()
         </main>
 
@@ -34,8 +34,13 @@
             </div>
         </footer>
     </div>
+    <script src="~/js/htmx.org/dist/htmx.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    
 </body>
 
 </html>
+
+
+    

@@ -1,0 +1,11 @@
+﻿@model ToDoListModel
+
+<div id="todolist-@Model.Id" class="border rounded shadow p-2" draggable="true" ondragstart="DragStart(event)" ondragend="DragEnd(event)">
+    <partial name="EditableTitle" for="@Model" />
+    <ul>
+        @foreach(var item in Model.Items)
+        {
+            <partial name="EditableItem" for="@item" />
+        }
+    </ul>   
+</div>
